@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CategoryController extends AbstractController
 {
+
     /**
      * @Route("/", name="index")
      */
@@ -26,12 +27,15 @@ class CategoryController extends AbstractController
         $category = new Category;
         $formCategory = $this->createForm(CategoryType::class, $category,
             [
-//                'action' => $this->generateUrl('category_create')
-                'action' => '/'
+                'action' => $this->generateUrl('category_create')
             ]
         );
 
-        $categories = $manager->getRepository(Category::class)->findAll();
+        $formCategory->handleRequest($request);
+        if ($formCategory->isSubmitted() && $formCategory->isValid()) {
+            $manager->persist($category);
+            $manager->flush();
+        }
 
         return $this->render('category/list.html.twig', [
             'entities' => $entities,

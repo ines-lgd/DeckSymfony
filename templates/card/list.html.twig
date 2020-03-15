@@ -7,17 +7,12 @@
     <h2>Library</h2>
     <hr/>
     {% for entity in entities %}
-        <!--<li>{{ entity.name }}</li>
-            <li>{{ entity.image }}</li>
-            <li>{{ entity.description }}</li>
-            <li>{{ entity.life }}</li>
-            <li>{{ entity.attack }}</li>-->
         <div class="card">
             <div class="cardHeader">
-                <span><b>{{ entity.name }}</b> ({{ entity.category }})</span>
+                <span><b>{{ entity.name }}</b> ({{ entity.category.name }})</span>
                 <span> </span>
             </div>
-            <div class="cardImage" style="background-image: url("{{ app.request.attributes.get('_route') ~ entity.image }}")"></div>
+            <div class="cardImage" style="background-image: url("{{ asset("'/uploads/cards/' ~ entity.image") }}")"></div>
             <div class="cardFooter">
                 <div class="cardNumber text-primary">{{ entity.mana }}</div>
                 <div class="cardNumber text-danger">{{ entity.life }}</div>
