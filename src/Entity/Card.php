@@ -59,9 +59,15 @@ class Card
      */
     private $category;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Deck", mappedBy="cards")
+     */
+    private $decks;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->decks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -175,6 +181,34 @@ class Card
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Deck[]
+     */
+    public function getDecks(): Collection
+    {
+        return $this->decks;
+    }
+
+    public function addDeck(Deck $deck): self
+    {
+        if (!$this->decks->contains($deck)) {
+            $this->decks[] = $deck;
+            $deck->addCard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeck(Deck $deck): self
+    {
+        if ($this->decks->contains($deck)) {
+            $this->decks->removeElement($deck);
+            $deck->removeCard($this);
+        }
 
         return $this;
     }
